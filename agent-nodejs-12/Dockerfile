@@ -16,12 +16,13 @@ COPY contrib/bin/configure-agent /usr/local/bin/configure-agent
 # Install NodeJS
 RUN curl https://raw.githubusercontent.com/cloudrouter/centos-repo/master/CentOS-Base.repo -o /etc/yum.repos.d/CentOS-Base.repo && \
     curl http://mirror.centos.org/centos-7/7/os/x86_64/RPM-GPG-KEY-CentOS-7 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 && \
-    INSTALL_PKGS="scl-utils make gcc-c++" && \
-    yum install -y centos-release-scl-rh && \
-    INSTALL_PKGS="rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon make gcc-c++" && \
-    ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
+    curl https://yum.oracle.com/public-yum-ol7.repo -o /etc/yum.repos.d/public-yum-ol7.repo && \
+    curl http://yum.oracle.com/RPM-GPG-KEY-oracle-ol7 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-ol7 && \
+    yum-config-manager --enable ol7_oracle_instantclient && \
+    INSTALL_PKGS="centos-release-scl-rh rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon scl-utils yum-utils make gcc-c++ oracle-instantclient19.3-basic" && \
     yum install -y --setopt=tsflags=nodocs --disableplugin=subscription-manager $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
+    ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
     yum install -y --setopt=tsflags=nodocs --disableplugin=subscription-manager nodejs && \
     rpm -V nodejs && \
