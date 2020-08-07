@@ -30,6 +30,7 @@ RUN curl https://raw.githubusercontent.com/cloudrouter/centos-repo/master/CentOS
     yum clean all -y 
 
 RUN npm install -g typescript
+ENV NODE_PATH "/usr/lib/node_modules/"
 
 RUN chown -R 1001:0 $HOME && \
     chmod -R g+rw $HOME
