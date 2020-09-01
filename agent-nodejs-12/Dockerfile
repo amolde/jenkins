@@ -20,16 +20,19 @@ RUN curl https://raw.githubusercontent.com/cloudrouter/centos-repo/master/CentOS
     curl http://yum.oracle.com/RPM-GPG-KEY-oracle-ol7 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-ol7 && \
     rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-ol7 && \
     yum-config-manager --enable ol7_oracle_instantclient && \
-    INSTALL_PKGS="centos-release-scl-rh rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon scl-utils yum-utils make gcc-c++ oracle-instantclient19.3-basic epel-release" && \
+    INSTALL_PKGS="centos-release-scl-rh rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon scl-utils yum-utils make gcc-c++ oracle-instantclient19.3-basic" && \
     yum install -y --setopt=tsflags=nodocs --disableplugin=subscription-manager $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
     yum install -y --setopt=tsflags=nodocs --disableplugin=subscription-manager nodejs && \
-    rpm -V nodejs && \
-    yum install -y chromium && \
-    rpm -V chromium && \
-    yum clean all -y 
+    rpm -V nodejs
+
+RUN yum -y localinstall https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && \
+    rpm -V google-chrome-stable && \
+    google-chrome-stable -version
+
+RUN yum clean all -y
 
 RUN npm install -g typescript
 # RUN npm list -g --depth 0
