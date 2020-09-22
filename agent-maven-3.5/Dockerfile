@@ -51,6 +51,8 @@ ADD contrib/bin/* /usr/local/bin/
 ADD ./contrib/settings.xml $HOME/.m2/
 
 RUN chown -R 1001:0 $HOME && \
-    chmod -R g+rw $HOME
+    chmod -R g+rw $HOME && \
+    chown -R 1001:0 $JMETER_HOME && \
+    chmod -R g+rw $JMETER_HOME
 
 USER 1001
