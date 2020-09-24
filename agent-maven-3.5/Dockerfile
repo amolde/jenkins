@@ -38,7 +38,7 @@ RUN mkdir -p /tmp/dependencies && \
     java -cp "${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar" org.jmeterplugins.repository.PluginManagerCMDInstaller && \
     rm -rf /tmp/dependencies
 
-ENV JMETER_PLUGINS="jpgc-cmd,jpgc-json,jpgc-casutg"
+ENV JMETER_PLUGINS="jpgc-cmd,jpgc-json,jpgc-casutg,jpgc-tst"
 
 RUN PluginsManagerCMD.sh install ${JMETER_PLUGINS}
 
@@ -51,8 +51,6 @@ ADD contrib/bin/* /usr/local/bin/
 ADD ./contrib/settings.xml $HOME/.m2/
 
 RUN chown -R 1001:0 $HOME && \
-    chmod -R g+rw $HOME && \
-    chown -R 1001:0 $JMETER_HOME && \
-    chmod -R g+rw $JMETER_HOME
+    chmod -R g+rw $HOME
 
 USER 1001
